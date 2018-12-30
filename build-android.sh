@@ -1,10 +1,9 @@
-DATE=`date +%Y%m%d`
-# cd android
-# ./gradlew assembleRelease
-# cd ../apk
-# cp ./android/app/build/outputs/apk/release .
+appVersion=`date '+%Y%m%d%H%M'`
+component="export const appVersion = \"Build $appVersion\""
 
+echo $component
 
+echo $component > ./src/app-version.js
 if [ -d ./android ]
 then 
     cd android
@@ -21,5 +20,8 @@ then
     echo "Apk folder already present."
 else
     mkdir Apk
-    cp ./android/app/build/outputs/apk/release/app-release.apk  ./Apk/app-release-`date +%Y-%m-%d`.apk
 fi
+
+ReleaseApk=./Apk/app-release-$appVersion.apk
+cp ./android/app/build/outputs/apk/release/app-release.apk $ReleaseApk
+echo "$(tput setaf 2)Available at $ReleaseApk $(tput sgr 0)" 
